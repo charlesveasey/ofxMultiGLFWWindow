@@ -5,7 +5,7 @@ Multiple GLFW windows in openFrameworks
 
 This addon is a modification of the GLFW window class. It allows multiple windows and events.
 
-The draw loop is called an aditional time for every window. If three windows are registered, then the draw loop will be called three times per frame. You can query the current window index to distribute draw routines. 
+The draw loop is called an additional time for every window. If three windows are registered, then the draw loop will be called three times per frame. You can query the current window index to distribute draw routines. 
 
 The update loop is called once per frame as normal.
 
