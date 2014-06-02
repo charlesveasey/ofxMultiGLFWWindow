@@ -9,6 +9,6 @@ The draw loop is called an aditional time for every window. If three windows are
 
 The update loop is called once per frame as normal.
 
-Window events can be de/registered on any window. The callbacks are global, but one can filter them by querying the window event origin.
+Window events can be registered on any window. The callbacks are global, but one can filter them by querying the window event origin.
 
 See the example project for use. 
