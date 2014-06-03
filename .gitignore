@@ -21,15 +21,15 @@
 *.app
 
 example/example.xcodeproj/project.xcworkspace/contents.xcworkspacedata
-
 example/example.xcodeproj/project.xcworkspace/xcshareddata/example.xccheckout
-
 example/example.xcodeproj/project.xcworkspace/xcuserdata/Charles.xcuserdatad/UserInterfaceState.xcuserstate
-
 example/example.xcodeproj/xcshareddata/xcschemes/example Debug.xcscheme
-
 example/example.xcodeproj/xcshareddata/xcschemes/example Release.xcscheme
-
 example/example.xcodeproj/xcuserdata/Charles.xcuserdatad/xcdebugger/Breakpoints_v2.xcbkptlist
-
 example/example.xcodeproj/xcuserdata/Charles.xcuserdatad/xcschemes/xcschememanagement.plist
+
+
+obj/
+*.sdf
+example/example.vcxproj.user
+example/example.v11.suo

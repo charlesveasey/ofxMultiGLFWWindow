@@ -14,3 +14,5 @@ Window events can be registered on any window. The callbacks are global, but one
 See the example project for use. 
 
 Note: if using Xcode, set ofxMultiGLFWWindow.cpp to compile as objective C++.
+
+TODO: OpenGL 3.2 not working under Windows 
