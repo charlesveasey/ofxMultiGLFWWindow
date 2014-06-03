@@ -12,3 +12,5 @@ The update loop is called once per frame as normal.
 Window events can be registered on any window. The callbacks are global, but one can filter them by querying the window event origin.
 
 See the example project for use. 
+
+Note: if using Xcode, set ofxMultiGLFWWindow.cpp to compile as objective C++.
