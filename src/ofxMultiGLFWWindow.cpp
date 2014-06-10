@@ -77,8 +77,13 @@ ofxMultiGLFWWindow::ofxMultiGLFWWindow():ofAppBaseWindow(){
 	iconSet = false;
 
 	glfwSetErrorCallback(error_cb);
-    windowCount = 0;
+    
+	// multi-window settings
+	windowCount = 0;
     windowIndex = 0;
+
+	// custom settings
+	bBorder = true;
 }
 
 
@@ -142,6 +147,8 @@ void ofxMultiGLFWWindow::setupOpenGL(int w, int h, int screenMode){
 //	ofLogNotice("ofxMultiGLFWWindow") << "WINDOW MODE IS " << screenMode;
 
 	int requestedMode = screenMode;
+
+	glfwWindowHint(GLFW_DECORATED,bBorder?1:0);
 
 	glfwWindowHint(GLFW_RED_BITS, rBits);
 	glfwWindowHint(GLFW_GREEN_BITS, gBits);
@@ -296,6 +303,16 @@ void ofxMultiGLFWWindow::setWindowIcon(const ofPixels & iconPixels){
 	XFlush(getX11Display());
 }
 #endif
+
+//--------------------------------------------
+void ofxMultiGLFWWindow::showBorder(){
+	bBorder = true;
+}
+//--------------------------------------------
+void ofxMultiGLFWWindow::hideBorder(){
+	bBorder = false;
+}
+
 
 //--------------------------------------------
 void ofxMultiGLFWWindow::runAppViaInfiniteLoop(ofBaseApp * appPtr){

@@ -54,7 +54,9 @@ public:
     void hideWindow(GLFWwindow* win);
 
     
-    //
+    //custom settings
+	void showBorder();
+	void hideBorder();
     
 	// window settings, this functions can be called from main before calling ofSetupOpenGL
 	void 		setNumSamples(int samples);
@@ -133,6 +135,11 @@ public:
 #endif
 
 private:
+
+	// custom settings
+	bool bBorder;
+		 
+
 	// callbacks
 	void			display(void);
 
