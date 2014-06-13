@@ -33,3 +33,6 @@ obj/
 *.sdf
 example/example.vcxproj.user
 example/example.v11.suo
+*.exp
+*.ilk
+*.pdb
