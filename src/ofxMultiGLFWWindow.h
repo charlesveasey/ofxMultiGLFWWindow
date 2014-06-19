@@ -13,6 +13,7 @@
 #include "ofAppBaseWindow.h"
 #include "ofEvents.h"
 #include "ofPixels.h"
+#include "ofRectangle.h"
 
 //class ofVec3f;
 class ofBaseApp;
@@ -93,7 +94,7 @@ public:
 	void setWindowTitle(string title);
 	void setWindowPosition(int x, int y);
 	void setWindowShape(int w, int h);
-
+    
 	void			setOrientation(ofOrientation orientation);
 	ofOrientation	getOrientation();
 
@@ -185,6 +186,8 @@ private:
     bool            bMultiWindowFullscreen; 
     
 	int				getCurrentMonitor();
+    int             getMonitorCount();
+    ofRectangle     getMonitorRect(int monitorIndex);
     
     int             windowIndex;
 	
