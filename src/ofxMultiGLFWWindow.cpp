@@ -539,6 +539,27 @@ int ofxMultiGLFWWindow::getCurrentMonitor(){
 	return 0;
 }
 
+//------------------------------------------------------------
+int ofxMultiGLFWWindow::getMonitorCount(){
+    int numberOfMonitors;
+    GLFWmonitor** monitors = glfwGetMonitors(&numberOfMonitors);
+    return numberOfMonitors;
+}
+
+//------------------------------------------------------------
+ofRectangle ofxMultiGLFWWindow::getMonitorRect(int monitorIndex){
+	int numberOfMonitors;
+	GLFWmonitor** monitors = glfwGetMonitors(&numberOfMonitors);
+    
+    int xM; int yM;
+    glfwGetMonitorPos(monitors[monitorIndex], &xM, &yM);
+    
+    const GLFWvidmode * desktopMode = glfwGetVideoMode(monitors[monitorIndex]);
+    
+    ofRectangle monitorRect(xM, yM, desktopMode->width, desktopMode->height);
+    
+    return monitorRect;
+}
 
 //------------------------------------------------------------
 ofPoint ofxMultiGLFWWindow::getScreenSize(){
