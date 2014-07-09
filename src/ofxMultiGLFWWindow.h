@@ -43,6 +43,8 @@ public:
     GLFWwindow* eventWindow;
     
     GLFWwindow* createWindow();
+    GLFWwindow* createFSWindow(int monitorIndex);
+
 
     void destroyWindow();
     void destroyWindow(GLFWwindow* win);
@@ -53,7 +55,8 @@ public:
 
     void hideWindow();
     void hideWindow(GLFWwindow* win);
-
+    
+    void ofGLReady();
     
     //custom settings
 	void showBorder();

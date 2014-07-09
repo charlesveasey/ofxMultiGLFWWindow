@@ -138,7 +138,6 @@ void ofxMultiGLFWWindow::setupOpenGL(int w, int h, int screenMode){
 	requestedWidth = w;
 	requestedHeight = h;
 
-
 	if(!glfwInit( )){
 		ofLogError("ofxMultiGLFWWindow") << "couldn't init GLFW";
 		return;
@@ -188,10 +187,18 @@ void ofxMultiGLFWWindow::setupOpenGL(int w, int h, int screenMode){
 			ofLogError("ofxMultiGLFWWindow") << "couldn't find any monitors";
 			return;
 		}
-	}else{
+	}else {
+        
+        if (!windowCount)
+            glfwWindowHint(GLFW_VISIBLE,GL_FALSE);
+        
+        
 		windowP = glfwCreateWindow(w, h, "", NULL, NULL);
-        windows.push_back(windowP);
-		if(!windowP){
+        
+        if (windowCount)
+            windows.push_back(windowP);
+		
+        if(!windowP){
 			ofLogError("ofxMultiGLFWWindow") << "couldn't create GLFW window";
 		}
 		#ifdef TARGET_LINUX
@@ -317,7 +324,7 @@ void ofxMultiGLFWWindow::hideBorder(){
 //--------------------------------------------
 void ofxMultiGLFWWindow::runAppViaInfiniteLoop(ofBaseApp * appPtr){
 	ofAppPtr = appPtr;
-	glfwMakeContextCurrent(windowP);
+	//glfwMakeContextCurrent(windowP);
 	ofNotifySetup();
 	while(true){
         ofNotifyUpdate();
@@ -362,7 +369,10 @@ void ofxMultiGLFWWindow::display(void){
         if( bEnableSetupScreen )ofSetupScreen();
 
 
-        ofNotifyDraw();
+        if (i==0)
+            ofNotifyDraw();
+        else
+            ofAppPtr->draw();
 
 
         #ifdef TARGET_WIN32
@@ -396,9 +406,9 @@ void ofxMultiGLFWWindow::display(void){
             }
         #endif
 
-	if(renderer){
-		renderer->finishRender();
-	}
+        if(renderer){
+            renderer->finishRender();
+        }
 
     }
 
@@ -441,7 +451,33 @@ GLFWwindow* ofxMultiGLFWWindow::getEventWindow(){
 GLFWwindow* ofxMultiGLFWWindow::createWindow() {
     setWindow(windows[0]);
     windows.push_back(glfwCreateWindow(1024, 768, "", NULL, glfwGetCurrentContext()));
+    setWindow(windows[windows.size()-1]);
     return windows[windows.size()-1];
+}
+
+//------------------------------------------------------------
+GLFWwindow* ofxMultiGLFWWindow::createFSWindow(int monitorIndex) {
+    int cnt = getMonitorCount();
+    if (monitorIndex >= cnt) return;
+    
+    ofRectangle rect = getMonitorRect(monitorIndex);
+    GLFWmonitor** monitors = glfwGetMonitors(&cnt);
+    
+    if (windows.size() > 0){
+        setWindow(windows[0]);
+        windows.push_back(glfwCreateWindow(rect.width, rect.height, "",  monitors[monitorIndex], glfwGetCurrentContext() ));
+    }
+    else{
+        windows.push_back(glfwCreateWindow(rect.width, rect.height, "",  monitors[monitorIndex], NULL));
+    }
+    setWindow(0);
+    makeContextCurrent();
+    return windows[windows.size()-1];
+}
+
+//------------------------------------------------------------
+void ofxMultiGLFWWindow::ofGLReady() {
+    ofGLReadyCallback();
 }
 
 //------------------------------------------------------------
