@@ -3,6 +3,7 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     ofBackground(0,0,0);
+	ofVbo::disableVAOs(); // must be disabled for openGL 3.2 on PC
 
     glfw = (ofxMultiGLFWWindow*)ofGetWindowPtr();
 
@@ -54,10 +55,14 @@ void ofApp::draw(){
         case 0:
             ofSetColor(200, 120, 28);
             ofCircle(200, 400, ofRandom(1000));
+			ofSetColor(200, 120, 200);
+			ofSphere(100);
             break;
         case 1:
             ofSetColor(28, 120, 200);
             ofCircle(200, 400, ofRandom(1000));
+			ofSetColor(200, 120, 200);
+			ofSphere(100);
             break;
         case 2:
             ofSetColor(28, 200, 100);
