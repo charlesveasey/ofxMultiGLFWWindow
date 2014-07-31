@@ -468,7 +468,7 @@ GLFWwindow* ofxMultiGLFWWindow::createWindow() {
 //------------------------------------------------------------
 GLFWwindow* ofxMultiGLFWWindow::createFSWindow(int monitorIndex) {
     int cnt = getMonitorCount();
-    if (monitorIndex >= cnt) return;
+	if (monitorIndex >= cnt) return NULL;
     
     ofRectangle rect = getMonitorRect(monitorIndex);
     GLFWmonitor** monitors = glfwGetMonitors(&cnt);
