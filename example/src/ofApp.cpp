@@ -3,7 +3,8 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     ofBackground(0,0,0);
-	ofVbo::disableVAOs(); // must be disabled for openGL 3.2 on PC
+
+    //ofVbo::disableVAOs();
 
     glfw = (ofxMultiGLFWWindow*)ofGetWindowPtr();
 
