@@ -4,6 +4,7 @@
 #include "ofBaseApp.h"
 #include "ofGLProgrammableRenderer.h"
 #include "ofAppRunner.h"
+#include "Poco/URI.h"
 
 #ifdef TARGET_LINUX
 	#include "ofIcon.h"
@@ -16,7 +17,6 @@
 	#endif
 	#include "GLFW/glfw3native.h"
 	#include <X11/Xatom.h>
-	#include "Poco/URI.h"
 #elif defined(TARGET_OSX)
 	#include <Cocoa/Cocoa.h>
 	#define GLFW_EXPOSE_NATIVE_COCOA
@@ -42,7 +42,7 @@ ofxMultiGLFWWindow::ofxMultiGLFWWindow():ofAppBaseWindow(){
 	bEnableSetupScreen	= true;
 	buttonInUse			= 0;
 	buttonPressed		= false;
-    bMultiWindowFullscreen  = false;
+    bMultiWindowFullscreen  = true;
 
 	nonFullScreenX		= 0;
 	nonFullScreenY		= 0;
@@ -264,7 +264,7 @@ void ofxMultiGLFWWindow::setupOpenGL(int w, int h, int screenMode){
 
 //--------------------------------------------
 void ofxMultiGLFWWindow::exit_cb(GLFWwindow* windowP_){
-	OF_EXIT_APP(0);
+	//OF_EXIT_APP(0);
 }
 
 //--------------------------------------------
@@ -324,12 +324,22 @@ void ofxMultiGLFWWindow::hideBorder(){
 //--------------------------------------------
 void ofxMultiGLFWWindow::runAppViaInfiniteLoop(ofBaseApp * appPtr){
 	ofAppPtr = appPtr;
-	//glfwMakeContextCurrent(windowP);
+	glfwMakeContextCurrent(windowP);
 	ofNotifySetup();
 	while(true){
         ofNotifyUpdate();
         display();
 	}
+    
+    for (int i=0; i<windows.size(); i++) {
+        glfwDestroyWindow(windows[i]);
+    }
+    glfwTerminate();
+}
+
+//------------------------------------------------------------
+void ofxMultiGLFWWindow::windowShouldClose(){
+	glfwSetWindowShouldClose(windowP,1);
 }
 
 //------------------------------------------------------------
@@ -458,7 +468,7 @@ GLFWwindow* ofxMultiGLFWWindow::createWindow() {
 //------------------------------------------------------------
 GLFWwindow* ofxMultiGLFWWindow::createFSWindow(int monitorIndex) {
     int cnt = getMonitorCount();
-    if (monitorIndex >= cnt) NULL;
+	if (monitorIndex >= cnt) return NULL;
     
     ofRectangle rect = getMonitorRect(monitorIndex);
     GLFWmonitor** monitors = glfwGetMonitors(&cnt);
@@ -973,8 +983,7 @@ ofOrientation ofxMultiGLFWWindow::getOrientation(){
 void ofxMultiGLFWWindow::exitApp(){
 	// Terminate GLFW
 	glfwTerminate();
-
-	OF_EXIT_APP(0);
+	std::exit(0);
 }
 
 //------------------------------------------------------------
@@ -1060,18 +1069,14 @@ void ofxMultiGLFWWindow::scroll_cb(GLFWwindow* windowP_, double x, double y) {
 }
 
 //------------------------------------------------------------
-void ofxMultiGLFWWindow::drop_cb(GLFWwindow* windowP_, const char* dropString) {
+void ofxMultiGLFWWindow::drop_cb(GLFWwindow* windowP_, int numFiles, const char** dropString) {
     instance->eventWindow = windowP_;
-
-	string drop = dropString;
 	ofDragInfo drag;
-	drag.position.set(ofGetMouseX()*instance->pixelScreenCoordScale, ofGetMouseY()*instance->pixelScreenCoordScale);
-	drag.files = ofSplitString(drop,"\n",true);
-#ifdef TARGET_LINUX
+	drag.position.set(ofGetMouseX(), ofGetMouseY());
+	drag.files.resize(numFiles);
 	for(int i=0; i<(int)drag.files.size(); i++){
-		drag.files[i] = Poco::URI(drag.files[i]).getPath();
+		drag.files[i] = Poco::URI(dropString[i]).getPath();
 	}
-#endif
 	ofNotifyDragEvent(drag);
 }
 
@@ -1081,10 +1086,11 @@ void ofxMultiGLFWWindow::error_cb(int errorCode, const char* errorDescription){
 }
 
 //------------------------------------------------------------
-void ofxMultiGLFWWindow::keyboard_cb(GLFWwindow* windowP_, int key, int scancode, int action, int mods) {
+void ofxMultiGLFWWindow::keyboard_cb(GLFWwindow* windowP_, int keycode, int scancode, unsigned int codepoint, int action, int mods) {
     instance->eventWindow = windowP_;
-
-	switch (key) {
+    
+	int key;
+	switch (keycode) {
 		case GLFW_KEY_ESCAPE:
 			key = OF_KEY_ESC;
 			break;
@@ -1186,24 +1192,19 @@ void ofxMultiGLFWWindow::keyboard_cb(GLFWwindow* windowP_, int key, int scancode
 			break;
 		case GLFW_KEY_KP_ENTER:
 			key = OF_KEY_RETURN;
-			break;   
+			break;
 		case GLFW_KEY_TAB:
 			key = OF_KEY_TAB;
-			break;   
+			break;
 		default:
+			key = codepoint;
 			break;
 	}
-
-	//GLFW defaults to uppercase - OF users are used to lowercase
-    //we look and see if shift is being held to toggle upper/lowecase 
-	if( key >= 65 && key <= 90 && !ofGetKeyPressed(OF_KEY_SHIFT) ){
-		key += 32;
-	}
-
+    
 	if(action == GLFW_PRESS || action == GLFW_REPEAT){
-		ofNotifyKeyPressed(key);
+		ofNotifyKeyPressed(key,keycode,scancode,codepoint);
 	}else if (action == GLFW_RELEASE){
-		ofNotifyKeyReleased(key);
+		ofNotifyKeyReleased(key,keycode,scancode,codepoint);
 	}
 }
 
