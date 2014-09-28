@@ -56,6 +56,12 @@ public:
     void hideWindow();
     void hideWindow(GLFWwindow* win);
     
+    
+    int				getCurrentMonitor();
+    int             getMonitorCount();
+    ofRectangle     getMonitorRect(int monitorIndex);
+    
+    
     void ofGLReady();
     
     //custom settings
@@ -189,11 +195,7 @@ private:
 
 	int 			nFramesSinceWindowResized;
 	bool			bDoubleBuffered;
-    bool            bMultiWindowFullscreen; 
-    
-	int				getCurrentMonitor();
-    int             getMonitorCount();
-    ofRectangle     getMonitorRect(int monitorIndex);
+    bool            bMultiWindowFullscreen;
     
     int             windowIndex;
 	
