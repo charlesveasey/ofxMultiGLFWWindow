@@ -42,7 +42,7 @@ ofxMultiGLFWWindow::ofxMultiGLFWWindow():ofAppBaseWindow(){
 	bEnableSetupScreen	= true;
 	buttonInUse			= 0;
 	buttonPressed		= false;
-    bMultiWindowFullscreen  = true;
+    bMultiWindowFullscreen  = false;
 
 	nonFullScreenX		= 0;
 	nonFullScreenY		= 0;
