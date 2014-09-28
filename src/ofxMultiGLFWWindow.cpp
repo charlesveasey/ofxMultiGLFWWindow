@@ -563,25 +563,32 @@ ofPoint ofxMultiGLFWWindow::getWindowPosition(){
 }
 
 //------------------------------------------------------------
-
 int ofxMultiGLFWWindow::getCurrentMonitor(){
 	int numberOfMonitors;
 	GLFWmonitor** monitors = glfwGetMonitors(&numberOfMonitors);
 
 	int xW;	int yW;
 	glfwGetWindowPos(windowP, &xW, &yW);
-	
+    ofRectangle windowRect(xW, yW, ofGetWindowWidth(), ofGetWindowHeight());
+    ofRectangle intersection;
+	float area = 0;
+    int cMonitor = 0;
+    
 	for (int iC=0; iC < numberOfMonitors; iC++){
 		int xM; int yM;
 		glfwGetMonitorPos(monitors[iC], &xM, &yM);
 		const GLFWvidmode * desktopMode = glfwGetVideoMode(monitors[iC]);
 		ofRectangle monitorRect(xM, yM, desktopMode->width, desktopMode->height);
-		if (monitorRect.inside(xW, yW)){
-			return iC;
-			break;
-		}
+
+        if (monitorRect.intersects(windowRect)){
+            ofRectangle intersection = monitorRect.getIntersection(windowRect);
+            if (intersection.getArea() > area){
+                area = intersection.getArea();
+                cMonitor = iC;
+            }
+        }
 	}
-	return 0;
+	return cMonitor;
 }
 
 //------------------------------------------------------------
