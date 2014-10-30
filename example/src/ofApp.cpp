@@ -54,18 +54,21 @@ void ofApp::draw(){
 
     switch (wIndex) { // switch on window index
         case 0:
+            ofBackground(0,0,0); // change background color on each window
             ofSetColor(200, 120, 28);
             ofCircle(200, 400, ofRandom(1000));
 			ofSetColor(200, 120, 200);
 			ofSphere(100);
             break;
         case 1:
+            ofBackground(255,0,0); // change background color on each window
             ofSetColor(28, 120, 200);
             ofCircle(200, 400, ofRandom(1000));
 			ofSetColor(200, 120, 200);
 			ofSphere(100);
             break;
         case 2:
+            ofBackground(0,0,255); // change background color on each window
             ofSetColor(28, 200, 100);
             ofCircle(200, 400, ofRandom(1000));
             break;
