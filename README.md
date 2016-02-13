@@ -1,7 +1,7 @@
 ofxMultiGLFWWindow
 ==================
 
-**Note: This addon is no longer supported as these features are integrated into the openFrameworks core starting with version 0.9.0. This addon was used to allow multi-window support in openFrameworks version 0.8.4.**
+**Note: This addon is no longer supported as these features are integrated into the openFrameworks core starting with version 0.9.0. This addon was used to allow multi-window support in openFrameworks version 0.8.x**
 
 Multiple GLFW windows in openFrameworks
 
